@@ -3,39 +3,36 @@
     <header class="login-header">
       <h1 id="page-title">Create Account</h1>
     </header>
-    <div class="errormsg">
+    
+   <div class="errormsg">
        <p v-if="errors.length">
     <b>Please correct the following error(s):</b>
     <ul>
-    <li v-for="e in error" :key="e">
-     {{ e }}</li>
+    <li v-for="e in errors" :key="e">
+     {{e}}
+     </li>
     </ul>
   </p>
     </div>
     <div class="form-row">
       <div class="form-container">
-       
-        <div class="form-group">
+       <div class="form-group">
           <div class="form-label">
-        
-            <label for="firstName" class="control-label">First name</label>
+        <label for="firstName" 
+        class="control-label">First name</label>
           </div>
           <div class="form-input">
             <input
               type="text"
-             
               class="form-control"
               name="firstName"
-              
               placeholder="First name"
-              errormessage=""
-            
-              v-model="firstName"
+             v-model="firstName"
             />
           </div>
         </div>
       </div>
-    
+       <p>{{  }}</p>
 
       <div class="form-container">
         <div class="form-group">
@@ -45,14 +42,10 @@
           <div class="form-input">
             <input
               type="text"
-            
-              class="form-control"
+             class="form-control"
               name="lastName"
-            
-              placeholder="Last name"
-              errormessage="Please enter last name"
-            
-              v-model="lastName"
+             placeholder="Last name"
+             v-model="lastName"
             />
           </div>
         </div>
@@ -61,20 +54,15 @@
 
     <div class="form-group">
       <div class="form-label">
-        <label for="email" class="control-label">Work Email</label>
+        <label for="email"
+         class="control-label">Work Email</label>
       </div>
       <div class="form-input">
         <input
-          type="text"
-         
-          class="form-control"
-          name="email"
-       
-          autocomplete="email"
+           name="email"
+         autocomplete="email"
           placeholder="Your work email"
-          errormessage="Please enter email"
-        
-          v-model="email"
+         v-model="email"
         />
       </div>
     </div>
@@ -92,8 +80,6 @@
               class="form-control"
               name="password"
               autocomplete="new-password"
-              errormessage="Please enter password"
-              required=""
               v-model="password"
             />
           </div>
@@ -112,8 +98,7 @@
               id="password-confirm"
               class="form-control"
               name="password-confirm"
-              errormessage="Please confirm password"
-              required=""
+              
             />
           </div>
         </div>
@@ -132,11 +117,20 @@
             <select
               id="country-select"
               class="form-control"
-              name="user.attributes.country"
-              errormessage="Please select country"
-              required=""
+             v-model="country"
             >
-              <option value="">Select Country</option>
+            <option value="">Select Country</option>
+            <option value="Algeria">Algeria</option>
+							<option value="Brazil">Brazil</option>
+              <option value="China">China</option>
+              <option value="Georgia">Georgia</option>
+						<option value="Germany">Germany</option>
+            <option value="India">India</option>
+            
+            <option value="Qatar">Qatar</option>
+           <option value="South Korea">South Korea</option>
+           <option value="United Kingdom">United Kingdom</option>
+
             </select>
           </div>
         </div>
@@ -153,12 +147,20 @@
               id="info-source"
               class="form-control"
               name="user.attributes.infoSource"
+              v-model="Recommendations"
             >
               <option value="Recommendations">Recommendations</option>
+              <option value="Facebook">Facebook</option>
+						<option value="Twitter">Twitter</option>
+						<option value="LinkedIn">LinkedIn</option>
+						<option value="Google">Google</option>
+						<option value="Investor's Network">Investor's Network</option>
+						<option value="Others">Others</option>
             </select>
           </div>
         </div>
       </div>
+      
    
       <div class="form-group">
         <div id="form-options" class="form-label">
@@ -189,9 +191,10 @@
             </div>
           </div>
         </div>
-      </div>
+         </div>
     </div>
-  </div>
+    </div>
+
 </template>
 
 <script>
@@ -200,42 +203,59 @@ export default {
   data() {
  return {
    errors: [],
-   firstName: '',
-   lastName: '',
-   email: '',
-   password: '',
+   firstName: "",
+   lastName: "",
+   email: "",
+   password: "",
+   country: "",
+   Recommendations:""
    
- }
+ };
   },
-  
-
-
   methods: {
-    previous() {
-      this.$emit("previous");
-    },
-    next(e) {
-       this.$emit("next");
-       this.errors = {}
+  next(e)
+   {
+    
+   this.errors=[];
+   
+    if(!this.firstName) 
+      {
+       this.errors.push("First Name is required");
+      }
 
-if(this.firstName && this.lastName)
+     if(!this.lastName) 
+     {
+     this.errors.push("Last Name is required");
+    }
 
-this.error=[];
-if(!this.firstName)
-{
-  this.error.push("First Name is required")
-}
-if(!this.lastName)
-{
-  this.error.push("Last Name is required")
-}
-console.warn("errors",this.error)
-e.preventDefault()
+    if(!this.email) 
+    {
+    this.errors.push("Email is required");
+   }
+  
+    if(!this.password) 
+      {
+      this.errors.push("Password is required");
+      }
+        if(!this.country) 
+      {
+      this.errors.push("Selected country is required");
+      }
+  if(!this.Recommendations) 
+      {
+      this.errors.push("Recommendation is required");
+      }
+ if (this.errors.length < 1 ) {
+        this.$emit("next");
+        e.preventDefault();
+      }
+
+ 
      
-
-    },
-  },
-};
+   },
+  } 
+  
+}
 </script>
 
 <style scoped>
@@ -266,6 +286,21 @@ e.preventDefault()
 .login-header h1 {
   text-align: center;
 }
+.errormsg {
+  color: red;
+  padding: 0.45rem 0.6rem;
+  font-size: 0.5rem;
+   text-decoration: none;
+
+}
+ul {
+  text-decoration: none;
+
+}
+li{
+   text-decoration: none;
+
+}
 /* form */
 .form-row {
   display: flex;
@@ -279,9 +314,12 @@ e.preventDefault()
 }
 .form-group {
   margin-bottom: 1rem;
-  margin-right: 20px;
-  margin-left: 20px;
-}
+  margin-right: 10px;
+  margin-left: 10px;
+} 
+   input .form-control {
+width: 100%;
+  }
 label {
   font-weight: 600;
   display: inline-block;
@@ -297,14 +335,14 @@ input,
 select {
   display: block;
   box-sizing: border-box;
-  width: 100%;
-  height: 2.48438rem;
+  width: 75%;
+  height: 2.4rem;
   margin: 0 0 1rem;
   padding: 0.5rem;
   border: 1px solid #cacaca;
   border-radius: 2px;
   background-color: #fff;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
   color: #4b4b4b;

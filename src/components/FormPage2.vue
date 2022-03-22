@@ -3,6 +3,17 @@
     <header class="login-header">
       <h1 id="page-title">Create Account</h1>
     </header>
+    <div class="errormsg">
+       <p v-if="errors.length">
+    <b>Please correct the following error(s):</b>
+    <ul>
+    <li v-for="e in errors" :key="e">
+     {{e}}
+     </li>
+    </ul>
+  </p>
+    </div>
+
     <div class="form-row">
       <div class="form-container">
         <div class="form-group">
@@ -17,8 +28,9 @@
               type="text"
               class="form-control"
               name="user.attributes.businessName"
-              errormessage="Please enter business name"
+          
               required=""
+              v-model="businessName"
             />
           </div>
         </div>
@@ -36,8 +48,9 @@
             id="business-address"
             class="form-control"
             name="user.attributes.businessAddress"
-            errormessage="Please enter business address"
+         
             required=""
+            v-model="businessAddress"
           />
         </div>
       </div>
@@ -266,14 +279,12 @@
 
 <script>
 export default {
-  name: "FormPage",
+  name: "FormPage2",
   data() {
     return {
       errors: [],
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
+      businessName: "",
+      businessAddress: "",
     };
   },
 
@@ -282,24 +293,27 @@ export default {
       this.$emit("previous");
     },
     next(e) {
-      this.$emit("next");
-      this.errors = {};
-
-      if (this.firstName && this.lastName) this.error = [];
-      if (!this.firstName) {
-        this.error.push("First Name is required");
+      
+      this.errors = [];
+      if (!this.businessName) {
+        this.errors.push("Business' Name is required");
       }
-      if (!this.lastName) {
-        this.error.push("Last Name is required");
+      if (!this.businessAddress) {
+        this.errors.push("Business' Address is required");
       }
-      console.warn("errors", this.error);
-      e.preventDefault();
+      if (this.errors.length < 1) {
+        this.$emit("next");
+        e.preventDefault();
+      }
+    
     },
   },
 };
 </script>
 
 <style scoped>
+ul {
+}
 .login-card {
   height: 780px;
 }

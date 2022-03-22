@@ -45,7 +45,7 @@ export default {
 * {
   box-sizing: border-box;
 }
-user agent stylesheet div {
+.user agent stylesheet div {
   display: block;
 }
 .h1 {
